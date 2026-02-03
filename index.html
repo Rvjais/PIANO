@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎹 Veer Piano</h1>
+        <p class="instructions">Press keyboard keys to play</p>
+        <div class="piano">
+            <div class="keys-container">
+                <div class="key white" data-key="a" data-note="C" data-offset="0"><span>A</span><span
+                        class="note">C</span></div>
+                <div class="key black" data-key="w" data-note="C#" data-offset="0"><span>W</span></div>
+                <div class="key white" data-key="s" data-note="D" data-offset="0"><span>S</span><span
+                        class="note">D</span></div>
+                <div class="key black" data-key="e" data-note="D#" data-offset="0"><span>E</span></div>
+                <div class="key white" data-key="d" data-note="E" data-offset="0"><span>D</span><span
+                        class="note">E</span></div>
+                <div class="key white" data-key="f" data-note="F" data-offset="0"><span>F</span><span
+                        class="note">F</span></div>
+                <div class="key black" data-key="t" data-note="F#" data-offset="0"><span>T</span></div>
+                <div class="key white" data-key="g" data-note="G" data-offset="0"><span>G</span><span
+                        class="note">G</span></div>
+                <div class="key black" data-key="y" data-note="G#" data-offset="0"><span>Y</span></div>
+                <div class="key white" data-key="h" data-note="A" data-offset="0"><span>H</span><span
+                        class="note">A</span></div>
+                <div class="key black" data-key="u" data-note="A#" data-offset="0"><span>U</span></div>
+                <div class="key white" data-key="j" data-note="B" data-offset="0"><span>J</span><span
+                        class="note">B</span></div>
+
+                
+                <div class="key white" data-key="k" data-note="C" data-offset="1"><span>K</span><span
+                        class="note">C</span></div>
+                <div class="key black" data-key="o" data-note="C#" data-offset="1"><span>O</span></div>
+                <div class="key white" data-key="l" data-note="D" data-offset="1"><span>L</span><span
+                        class="note">D</span></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <p class="control-instruction">Use ⬆️ ⬇️ Arrow Keys to Change Scale</p>
+            <div class="octave-display">Scale: <span id="current-octave">4</span></div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

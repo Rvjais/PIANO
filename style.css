@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Metal+Mania&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Metal Mania', cursive;
+    background: radial-gradient(circle at center, #440000 0%, #110000 100%);
+    
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ff5500;
+    
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    background: rgba(30, 0, 0, 0.85);
+    
+    padding: 40px;
+    border: 4px solid #7a0000;
+    
+    border-radius: 10px;
+    position: relative;
+    box-shadow:
+        0 0 60px rgba(255, 50, 0, 0.5),
+        
+        inset 0 0 50px rgba(100, 20, 0, 0.8);
+    z-index: 10;
+}
+
+h1 {
+    font-family: 'Creepster', cursive;
+    color: #ff4400;
+    
+    font-size: 4em;
+    margin-bottom: 10px;
+    text-shadow:
+        0 0 15px #ff2200,
+        0 0 25px #aa0000,
+        0 0 35px #000000;
+    letter-spacing: 3px;
+    animation: flicker 3s infinite alternate;
+}
+
+.instructions {
+    color: #ff8800;
+    
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    text-shadow: 0 0 8px #ff4500;
+}
+
+
+.piano {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background: #110000;
+    
+    border: 5px solid #550000;
+    box-shadow: 0 0 40px #ff2200;
+    
+    border-radius: 5px;
+}
+
+.octave {
+    display: flex;
+    flex-direction: column;
+    margin: 0 2px;
+}
+
+.octave-label {
+    display: none;
+}
+
+.keys-container {
+    display: flex;
+    position: relative;
+}
+
+.key {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 10px;
+    font-weight: bold;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+.key.white {
+    width: 50px;
+    height: 200px;
+    background: linear-gradient(to bottom, #dcdcdc, #aaaaaa);
+    
+    border: 1px solid #666;
+    color: #333;
+    z-index: 1;
+}
+
+.key.white:active,
+.key.white.playing {
+    background: linear-gradient(to bottom, #ff5500, #880000);
+    
+    box-shadow: 0 0 25px #ff5500;
+    transform: translateY(2px);
+    color: #fff;
+}
+
+
+.key.black {
+    width: 35px;
+    height: 130px;
+    background: linear-gradient(to bottom, #220000, #440000);
+    
+    border: 1px solid #660000;
+    margin-left: -17.5px;
+    margin-right: -17.5px;
+    z-index: 2;
+    color: #aa5555;
+}
+
+.key.black span {
+    display: none;
+}
+
+.key.black:active,
+.key.black.playing {
+    background: linear-gradient(to bottom, #ff2200, #550000);
+    box-shadow: 0 0 20px #ff2200;
+    transform: translateY(2px);
+}
+
+.note {
+    font-size: 0.8em;
+    opacity: 0.9;
+    
+}
+
+
+@keyframes flicker {
+
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+        text-shadow:
+            0 0 15px #ff2200,
+            0 0 25px #aa0000;
+    }
+
+    20%,
+    24%,
+    55% {
+        text-shadow: none;
+        color: #880000;
+    }
+}
+
+
+.floating-note {
+    position: absolute;
+    font-family: 'Metal Mania', cursive;
+    font-size: 2em;
+    font-weight: bold;
+    color: #ff6600;
+    
+    pointer-events: none;
+    z-index: 100;
+    text-shadow:
+        0 0 15px #ff4400,
+        0 0 25px #ffff00;
+    animation: floatUp 1.5s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+        color: #ff2200;
+    }
+
+    50% {
+        color: #ffcc00;
+        
+    }
+
+    100% {
+        transform: translateY(-200px) scale(1.5) rotate(15deg);
+        opacity: 0;
+        color: #ffff88;
+    }
+}
+
+
+.controls {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background: rgba(40, 0, 0, 0.9);
+    
+    padding: 15px 30px;
+    border: 2px solid #7a0000;
+    border-radius: 8px;
+    box-shadow: 0 0 25px rgba(150, 20, 0, 0.6);
+}
+
+.control-instruction {
+    color: #ff8800;
+    font-size: 1.1em;
+    font-family: 'Creepster', cursive;
+    margin: 0;
+    text-shadow: 0 0 5px #ff4400;
+}
+
+.octave-display {
+    font-family: 'Metal Mania', cursive;
+    font-size: 2em;
+    
+    color: #ff4400;
+    text-shadow: 0 0 15px #ff2200;
+    min-width: 100px;
+}

@@ -1,0 +1,203 @@
+Tone.start();
+
+const synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: { type: "triangle" },
+    envelope: {
+        attack: 0.005,
+        decay: 0.1,
+        sustain: 0.3,
+        release: 1
+    }
+}).toDestination();
+
+
+let currentOctave = 4;
+const minOctave = 1;
+const maxOctave = 7;
+
+
+
+
+const noteMapping = {
+
+    'a': { note: 'C', offset: 0 },
+    's': { note: 'D', offset: 0 },
+    'd': { note: 'E', offset: 0 },
+    'f': { note: 'F', offset: 0 },
+    'g': { note: 'G', offset: 0 },
+    'h': { note: 'A', offset: 0 },
+    'j': { note: 'B', offset: 0 },
+
+
+    'w': { note: 'C#', offset: 0 },
+    'e': { note: 'D#', offset: 0 },
+    't': { note: 'F#', offset: 0 },
+    'y': { note: 'G#', offset: 0 },
+    'u': { note: 'A#', offset: 0 },
+
+
+    'k': { note: 'C', offset: 1 },
+    'l': { note: 'D', offset: 1 },
+    'o': { note: 'C#', offset: 1 }
+};
+
+
+const pressedKeys = new Set();
+
+
+const octaveDisplay = document.getElementById('current-octave');
+
+function updateOctaveDisplay() {
+    if (octaveDisplay) {
+        octaveDisplay.textContent = currentOctave;
+    }
+}
+
+
+function playNote(noteConfig, inputKey) {
+    const targetOctave = currentOctave + noteConfig.offset;
+    const fullNote = `${noteConfig.note}${targetOctave}`;
+    const noteBase = noteConfig.note;
+
+
+    let keyElement = null;
+
+
+    if (inputKey) {
+        keyElement = document.querySelector(`.key[data-key="${inputKey}"]`);
+    }
+
+
+    if (!keyElement) {
+        keyElement = document.querySelector(`.key[data-note="${noteBase}"]`);
+    }
+
+    if (keyElement) {
+        keyElement.classList.add('playing');
+        createFloatingNote(keyElement, fullNote);
+    }
+
+    synth.triggerAttack(fullNote);
+}
+
+
+function stopNote(noteConfig, inputKey) {
+    const targetOctave = currentOctave + noteConfig.offset;
+    const fullNote = `${noteConfig.note}${targetOctave}`;
+
+    let keyElement = null;
+
+
+    if (inputKey) {
+        keyElement = document.querySelector(`.key[data-key="${inputKey}"]`);
+    }
+
+
+    if (!keyElement) {
+        keyElement = document.querySelector(`.key[data-note="${noteConfig.note}"]`);
+    }
+
+    if (keyElement) {
+        keyElement.classList.remove('playing');
+    }
+
+
+    synth.triggerRelease(fullNote);
+}
+
+
+document.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
+
+    const key = e.key.toLowerCase();
+
+    if (noteMapping[key] && !pressedKeys.has(key)) {
+        pressedKeys.add(key);
+        playNote(noteMapping[key], key);
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    const key = e.key.toLowerCase();
+
+    if (noteMapping[key]) {
+        pressedKeys.delete(key);
+        stopNote(noteMapping[key], key);
+    }
+});
+
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') {
+        if (currentOctave < maxOctave) {
+            currentOctave++;
+            updateOctaveDisplay();
+        }
+    } else if (e.key === 'ArrowDown') {
+        if (currentOctave > minOctave) {
+            currentOctave--;
+            updateOctaveDisplay();
+        }
+    }
+});
+
+
+document.querySelectorAll('.key').forEach(keyElement => {
+    keyElement.addEventListener('mousedown', () => {
+        const note = keyElement.dataset.note;
+        let offset = 0;
+        if (keyElement.dataset.offset) {
+            offset = parseInt(keyElement.dataset.offset);
+        }
+
+        const fullNote = `${note}${currentOctave + offset}`;
+
+        keyElement.classList.add('playing');
+        createFloatingNote(keyElement, fullNote);
+        synth.triggerAttack(fullNote);
+    });
+
+    keyElement.addEventListener('mouseup', () => {
+        const note = keyElement.dataset.note;
+        let offset = 0;
+        if (keyElement.dataset.offset) {
+            offset = parseInt(keyElement.dataset.offset);
+        }
+        const fullNote = `${note}${currentOctave + offset}`;
+
+        keyElement.classList.remove('playing');
+        synth.triggerRelease(fullNote);
+    });
+
+    keyElement.addEventListener('mouseleave', () => {
+        const note = keyElement.dataset.note;
+        let offset = 0;
+        if (keyElement.dataset.offset) {
+            offset = parseInt(keyElement.dataset.offset);
+        }
+        const fullNote = `${note}${currentOctave + offset}`;
+
+        keyElement.classList.remove('playing');
+        synth.triggerRelease(fullNote);
+    });
+});
+
+
+function createFloatingNote(keyElement, noteName) {
+    const note = document.createElement('div');
+    note.classList.add('floating-note');
+
+    const text = noteName || keyElement.dataset.note;
+
+    note.innerText = text.replace(/\d/, '');
+
+    const rect = keyElement.getBoundingClientRect();
+    note.style.left = `${rect.left + rect.width / 2}px`;
+    note.style.top = `${rect.top}px`;
+
+    document.body.appendChild(note);
+
+    setTimeout(() => {
+        note.remove();
+    }, 1500);
+}
