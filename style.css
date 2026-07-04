@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Metal+Mania&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Metal+Mania&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
 
 * {
     margin: 0;
@@ -137,6 +137,14 @@ h1 {
     display: none;
 }
 
+.container[data-style="saragam"] .key.black .note,
+.container[data-style="hindi"] .key.black .note {
+    display: block;
+    font-size: 0.65em;
+    color: #cc8866;
+    margin-top: 5px;
+}
+
 .key.black:active,
 .key.black.playing {
     background: linear-gradient(to bottom, #ff2200, #550000);
@@ -190,6 +198,10 @@ h1 {
     animation: floatUp 1.5s ease-out forwards;
 }
 
+.floating-note.hindi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
 @keyframes floatUp {
     0% {
         transform: translateY(0) scale(1) rotate(0deg);
@@ -241,4 +253,35 @@ h1 {
     color: #ff4400;
     text-shadow: 0 0 15px #ff2200;
     min-width: 100px;
+}
+
+.style-switcher {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.style-btn {
+    font-family: 'Metal Mania', cursive;
+    font-size: 1em;
+    padding: 6px 16px;
+    background: rgba(60, 0, 0, 0.9);
+    color: #aa5555;
+    border: 2px solid #550000;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.style-btn:hover {
+    color: #ff8800;
+    border-color: #aa3300;
+    box-shadow: 0 0 15px rgba(255, 68, 0, 0.4);
+}
+
+.style-btn.active {
+    color: #ff5500;
+    border-color: #ff4400;
+    background: rgba(100, 20, 0, 0.9);
+    box-shadow: 0 0 20px rgba(255, 68, 0, 0.5);
 }

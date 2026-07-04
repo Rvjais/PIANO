@@ -42,6 +42,55 @@ const noteMapping = {
 };
 
 
+const saragamMap = {
+    'C':  { en: 'Sa', hi: 'सा' },
+    'C#': { en: 'Re♭', hi: 'रे॒' },
+    'D':  { en: 'Re', hi: 'रे' },
+    'D#': { en: 'Ga♭', hi: 'ग॒' },
+    'E':  { en: 'Ga', hi: 'ग' },
+    'F':  { en: 'Ma', hi: 'म' },
+    'F#': { en: 'Ma♯', hi: 'म॑' },
+    'G':  { en: 'Pa', hi: 'प' },
+    'G#': { en: 'Dha♭', hi: 'ध॒' },
+    'A':  { en: 'Dha', hi: 'ध' },
+    'A#': { en: 'Ni♭', hi: 'नि॒' },
+    'B':  { en: 'Ni', hi: 'नि' }
+};
+
+
+let currentStyle = 'english';
+
+
+function getNoteLabel(noteBase) {
+    if (currentStyle === 'english') return noteBase;
+    if (currentStyle === 'saragam') return saragamMap[noteBase]?.en || noteBase;
+    return saragamMap[noteBase]?.hi || noteBase;
+}
+
+
+function updateKeyLabels() {
+    document.querySelectorAll('.key').forEach(keyEl => {
+        const noteSpan = keyEl.querySelector('.note');
+        if (noteSpan) {
+            noteSpan.textContent = getNoteLabel(keyEl.dataset.note);
+        }
+    });
+}
+
+
+function setStyle(style) {
+    currentStyle = style;
+    document.querySelector('.container').setAttribute('data-style', style);
+    document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+    const activeBtn = document.querySelector(`.style-btn[data-style="${style}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+    updateKeyLabels();
+}
+
+
+document.querySelector('.container').setAttribute('data-style', 'english');
+
+
 const pressedKeys = new Set();
 
 
@@ -187,9 +236,12 @@ function createFloatingNote(keyElement, noteName) {
     const note = document.createElement('div');
     note.classList.add('floating-note');
 
-    const text = noteName || keyElement.dataset.note;
+    const noteBase = keyElement.dataset.note;
+    note.textContent = getNoteLabel(noteBase);
 
-    note.innerText = text.replace(/\d/, '');
+    if (currentStyle === 'hindi') {
+        note.classList.add('hindi');
+    }
 
     const rect = keyElement.getBoundingClientRect();
     note.style.left = `${rect.left + rect.width / 2}px`;
@@ -201,3 +253,10 @@ function createFloatingNote(keyElement, noteName) {
         note.remove();
     }, 1500);
 }
+
+
+document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        setStyle(btn.dataset.style);
+    });
+});
