@@ -192,7 +192,10 @@ document.addEventListener('keydown', (e) => {
 
 
 document.querySelectorAll('.key').forEach(keyElement => {
-    keyElement.addEventListener('mousedown', () => {
+    function noteOn(e) {
+        if (e.type.startsWith('touch')) {
+            e.preventDefault();
+        }
         const note = keyElement.dataset.note;
         let offset = 0;
         if (keyElement.dataset.offset) {
@@ -204,9 +207,12 @@ document.querySelectorAll('.key').forEach(keyElement => {
         keyElement.classList.add('playing');
         createFloatingNote(keyElement, fullNote);
         synth.triggerAttack(fullNote);
-    });
+    }
 
-    keyElement.addEventListener('mouseup', () => {
+    function noteOff(e) {
+        if (e.type.startsWith('touch')) {
+            e.preventDefault();
+        }
         const note = keyElement.dataset.note;
         let offset = 0;
         if (keyElement.dataset.offset) {
@@ -216,19 +222,14 @@ document.querySelectorAll('.key').forEach(keyElement => {
 
         keyElement.classList.remove('playing');
         synth.triggerRelease(fullNote);
-    });
+    }
 
-    keyElement.addEventListener('mouseleave', () => {
-        const note = keyElement.dataset.note;
-        let offset = 0;
-        if (keyElement.dataset.offset) {
-            offset = parseInt(keyElement.dataset.offset);
-        }
-        const fullNote = `${note}${currentOctave + offset}`;
-
-        keyElement.classList.remove('playing');
-        synth.triggerRelease(fullNote);
-    });
+    keyElement.addEventListener('mousedown', noteOn);
+    keyElement.addEventListener('mouseup', noteOff);
+    keyElement.addEventListener('mouseleave', noteOff);
+    keyElement.addEventListener('touchstart', noteOn, { passive: false });
+    keyElement.addEventListener('touchend', noteOff, { passive: false });
+    keyElement.addEventListener('touchcancel', noteOff, { passive: false });
 });
 
 
@@ -260,3 +261,11 @@ document.querySelectorAll('.style-btn').forEach(btn => {
         setStyle(btn.dataset.style);
     });
 });
+
+
+if (screen.orientation) {
+    screen.orientation.addEventListener('change', () => {
+        document.getElementById('rotate-overlay').style.display =
+            screen.orientation.type.includes('portrait') && window.innerWidth <= 768 ? 'flex' : 'none';
+    });
+}

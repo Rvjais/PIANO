@@ -285,3 +285,114 @@ h1 {
     background: rgba(100, 20, 0, 0.9);
     box-shadow: 0 0 20px rgba(255, 68, 0, 0.5);
 }
+
+
+#rotate-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #440000 0%, #110000 100%);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ff5500;
+    font-family: 'Creepster', cursive;
+    text-align: center;
+    padding: 20px;
+}
+
+#rotate-overlay .icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    animation: rotatePhone 2s ease-in-out infinite;
+}
+
+#rotate-overlay p {
+    font-size: 1.5em;
+    text-shadow: 0 0 15px #ff2200;
+}
+
+@keyframes rotatePhone {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+}
+
+@media (orientation: portrait) and (max-width: 768px) {
+    #rotate-overlay {
+        display: flex;
+    }
+    .container {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    .container {
+        padding: 8px 15px;
+    }
+
+    h1 {
+        font-size: 1.6em;
+        margin-bottom: 4px;
+    }
+
+    .instructions {
+        font-size: 0.7em;
+        margin-bottom: 8px;
+    }
+
+    .piano {
+        padding: 8px;
+    }
+
+    .key.white {
+        width: 8vw;
+        height: 32vh;
+        max-height: 170px;
+    }
+
+    .key.black {
+        width: 5.5vw;
+        height: 20vh;
+        max-height: 105px;
+        margin-left: -2.75vw;
+        margin-right: -2.75vw;
+    }
+
+    .key {
+        padding-bottom: 4px;
+        font-size: 0.8em;
+    }
+
+    .controls {
+        margin-top: 8px;
+        padding: 6px 12px;
+        gap: 5px;
+    }
+
+    .octave-display {
+        font-size: 1em;
+    }
+
+    .control-instruction {
+        font-size: 0.7em;
+    }
+
+    .style-btn {
+        font-size: 0.7em;
+        padding: 3px 8px;
+    }
+
+    .style-switcher {
+        gap: 5px;
+        margin-top: 2px;
+    }
+
+    .floating-note {
+        font-size: 1.3em;
+    }
+}
